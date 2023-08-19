@@ -3,6 +3,7 @@ import 'dart:developer' show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'button.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   await _initialize();
@@ -36,10 +37,11 @@ class TestPage extends StatefulWidget {
   State<TestPage> createState() => TestPageState();
 }
 
-//초기 화면 페이지
 class TestPageState extends State<TestPage> {
   late NaverMapController _mapController;
   final Completer<NaverMapController> mapControllerCompleter = Completer();
+  List<NLatLng> _markersposition = []; // 마커 위도 경도 리스트
+  List<NMarker> _markers = []; // 저장된 마커 리스트
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class TestPageState extends State<TestPage> {
       body: Column(
         children: [
           Container(
-            //맵을 위쪽 정렬
+            // 맵을 위쪽 정렬
             alignment: Alignment.topCenter,
             child: SizedBox(
               width: mapSize.width,
@@ -66,20 +68,26 @@ class TestPageState extends State<TestPage> {
             ),
           ),
           SizedBox(height: 20), // 버튼과 지도 사이에 간격 조정
-          //button.dart에 만들어 놓은 길찾기 버튼 (내가 만든 외부 클래스임 )
-          RoadButton(),
+          // button.dart에 만들어 놓은 길찾기 버튼 (내가 만든 외부 클래스임)
+          ElevatedButton(
+            child: const Text('길찾기'),
+            onPressed: () {
+              print("길찾기 버튼 클릭");
+              drawPath(_mapController);
+            },
+          ),
         ],
       ),
     );
   }
 
-  // 네이버 지도 위젯을 생성하는 부분
+  // 지도 위젯을 생성하는 부분
   Widget _naverMapSection() => NaverMap(
         options: const NaverMapViewOptions(
           // 초기 카메라 위치 설정: 순천향 대학교로 설정
           initialCameraPosition: NCameraPosition(
             target: NLatLng(36.770769, 126.9316), // 위도 경도
-            zoom: 15, // 확대 축소 레벨
+            zoom: 16, // 확대 축소 레벨
             bearing: 0,
             tilt: 0,
           ),
@@ -89,38 +97,71 @@ class TestPageState extends State<TestPage> {
         ),
         onMapReady: (controller) async {
           _mapController = controller;
+
           mapControllerCompleter.complete(controller);
           log("onMapReady", name: "onMapReady");
-
-          // 지도 위에 두 개의 마커 추가
-          final s_marker =
-              NMarker(id: 'test', position: const NLatLng(36.770769, 126.9316));
-          final e_marker = NMarker(
-              id: 'test1', position: const NLatLng(36.769005, 126.934844));
-          controller.addOverlayAll({s_marker, e_marker});
-
-          // 시작마커의 정보창 열기 (소운동장 마커)
-          final show_smarker =
-              NInfoWindow.onMarker(id: s_marker.info.id, text: "출발");
-          s_marker.openInfoWindow(show_smarker);
-
-          final show_emarker =
-              NInfoWindow.onMarker(id: e_marker.info.id, text: "도착");
-          e_marker.openInfoWindow(show_emarker);
         },
         // 지도를 클릭했을 때의 콜백 함수
         onMapTapped: (point, coord) {
+          if (_markersposition.length >= 2) {
+            // 이미 2개 이상의 요소가 저장되어 있다면 모든 요소 초기화
+            _markersposition.clear();
+            // 지도 위에 기존 마커 제거
+            _mapController.clearOverlays();
+          }
           // 클릭한 위치의 경도, 위도 정보를 가져옴
           double latitude = coord.latitude;
           double longitude = coord.longitude;
 
-          // 마커 추가
-          _addMarker(NLatLng(latitude, longitude));
+          // 클릭한 위치의 위도 경도를 리스트에 저장
+          _markersposition.add(NLatLng(latitude, longitude));
+          print(_markersposition);
+
+          addMarker();
         },
       );
 
-  void _addMarker(NLatLng latLng) {
-    final new_marker = NMarker(id: 'new', position: latLng);
-    _mapController.addOverlay(new_marker);
+  // 마커 추가 함수
+  void addMarker() {
+    print(_markersposition);
+    if (_markersposition.isNotEmpty) {
+      final s_marker = NMarker(id: 'test', position: _markersposition[0]);
+
+      final show_smarker =
+          NInfoWindow.onMarker(id: s_marker.info.id, text: "출발");
+      s_marker.openInfoWindow(show_smarker);
+
+      if (_markersposition.length >= 2) {
+        final e_marker = NMarker(id: 'test1', position: _markersposition[1]);
+        final show_emarker =
+            NInfoWindow.onMarker(id: e_marker.info.id, text: "도착");
+        e_marker.openInfoWindow(show_emarker);
+
+        _mapController.clearOverlays();
+        _mapController.addOverlayAll({s_marker, e_marker});
+        // 길찾기 버튼을 눌렀을 때만 경로 그리기 함수 실행
+      } else {
+        _mapController.clearOverlays();
+        _mapController.addOverlay(s_marker);
+      }
+    } else {
+      return;
+    }
+  }
+
+  void drawPath(NaverMapController Controller) {
+    if (_markersposition.length >= 2) {
+      final pathOverlay = NPathOverlay(
+        coords: _markersposition
+        //NLatLng(37.506932467450326, 127.05578661133796), // 출발지 좌표
+        //NLatLng(37.606932467450326, 127.05578661133796), // 도착지 좌표
+        ,
+        color: Colors.red,
+        width: 8.0,
+        id: 'walkPath',
+      );
+
+      Controller.addOverlay(pathOverlay);
+    }
   }
 }
