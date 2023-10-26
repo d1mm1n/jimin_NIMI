@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477805277886",
+    "project_id": "cs-load-c68a8",
+    "storage_bucket": "cs-load-c68a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477805277886:android:357716a7ff5cf8a671e4ef",
+        "android_client_info": {
+          "package_name": "com.example.navermap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI_DxqZYgZgcfhLtEk2PHCQNRplswj1nY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

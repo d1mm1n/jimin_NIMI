@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'main.dart';
+import 'load.dart';
 import 'package:provider/provider.dart';
 
 // 길찾기 버튼

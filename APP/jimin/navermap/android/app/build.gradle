@@ -1,3 +1,8 @@
+//plugins 블럭은 최상위에 있어야함 plugins 블럭 위에 올 수 있는건 buildscript{} 랑 plugins {} 뿐임
+plugins {
+    id 'com.google.gms.google-services'
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -24,6 +29,10 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+//firebase 쓰기 위해서 아래 추가
+apply plugin: 'com.google.gms.google-services'
+
+
 
 android {
     namespace "com.example.navermap"
@@ -52,6 +61,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        //mutiDexEnabled true
     }
 
     buildTypes {
@@ -67,10 +77,23 @@ flutter {
     source '../..'
 }
 
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //NAVER지도 SDK는 구글 플레이 서비스, 지자기 및 가속도 센서를 사용 FusedLocationSource 하여???? 뭔소리임 이게 여튼 최적의 위치를 반환하는 구현체를 제공
     //를 사용하려면 앱 모듈에 대한 종속성을 추가 (아래 추가해줌)
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
+
+    //파이어 베이스 부분
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:32.4.0')
+
 }
+
+
+
+
+
+
+
