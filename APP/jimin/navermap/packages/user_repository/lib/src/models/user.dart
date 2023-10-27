@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:user_repository/src/entities/user_entity.dart';
+import '../entities/entities.dart';
 
 class MyUser extends Equatable {
   final String userId;
@@ -10,11 +10,7 @@ class MyUser extends Equatable {
 
   static const empty = MyUser(userId: '', email: '', name: '');
 
-  MyUser copyWith({
-    String? userId,
-    String? email,
-    String? name,
-  }) {
+  MyUser copyWith({String? userId, String? email, String? name}) {
     return MyUser(
         userId: userId ?? this.userId,
         email: email ?? this.email,
@@ -31,6 +27,5 @@ class MyUser extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [userId, email, name];
 }

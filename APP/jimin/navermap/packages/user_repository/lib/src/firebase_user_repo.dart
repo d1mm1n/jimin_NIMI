@@ -11,6 +11,14 @@ class FirebaseUserRepo implements UserRepository {
   FirebaseUserRepo({
     FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+
+  @override
+  Stream<User?> get user {
+    return _firebaseAuth.authStateChanges().map((firebaseUser) {
+      return firebaseUser;
+    });
+  }
+
   @override
   Future<void> signIn(String email, String password) async {
     try {
@@ -23,19 +31,13 @@ class FirebaseUserRepo implements UserRepository {
   }
 
   @override
-  Stream<User?> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser;
-    });
-  }
-
-  @override
-  Future<MyUser> signup(MyUser myUser, String password) async {
+  Future<MyUser> signUp(MyUser myUser, String password) async {
     try {
       UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
           email: myUser.email, password: password);
 
       myUser = myUser.copyWith(userId: user.user!.uid);
+
       return myUser;
     } catch (e) {
       log(e.toString());
@@ -44,7 +46,7 @@ class FirebaseUserRepo implements UserRepository {
   }
 
   @override
-  Future<void> setUserDate(MyUser myUser) async {
+  Future<void> setUserData(MyUser myUser) async {
     try {
       await usersCollection
           .doc(myUser.userId)
@@ -53,5 +55,10 @@ class FirebaseUserRepo implements UserRepository {
       log(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Future<void> logOut() async {
+    await _firebaseAuth.signOut();
   }
 }

@@ -1,10 +1,20 @@
 part of 'sign_in_bloc.dart';
 
-sealed class SingInState extends Equatable {
-  const SingInState();
+sealed class SignInState extends Equatable {
+  const SignInState();
 
   @override
   List<Object> get props => [];
 }
 
-final class SingInInitial extends SingInState {}
+final class SignInInitial extends SignInState {}
+
+class SignInSuccess extends SignInState {}
+
+class SignInFailure extends SignInState {
+  final String? message;
+
+  const SignInFailure({this.message});
+}
+
+class SignInProcess extends SignInState {}
