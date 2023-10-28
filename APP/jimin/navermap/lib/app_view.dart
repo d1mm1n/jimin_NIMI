@@ -20,7 +20,7 @@ class MyAppView extends StatelessWidget {
               primary: Color.fromRGBO(111, 172, 87, 1),
               onPrimary: Colors.black,
               //secondary 색 바꾸면 로그인 아래 바 색도 바뀜
-              secondary: Color.fromRGBO(255, 208, 79, 1),
+              secondary: Color.fromRGBO(255, 203, 60, 1),
               onSecondary: Colors.white,
               tertiary: Color.fromRGBO(152, 202, 121, 1),
               error: Colors.red,

@@ -43,16 +43,14 @@ class MyTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Colors.transparent),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
           borderSide:
               //여기서 텍스트 필드의 색변경
-              const BorderSide(
-                  color: Color.fromARGB(1, 101, 165,
-                      84) /*Theme.of(context).colorScheme.secondary*/),
+              BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
         fillColor: Colors.grey.shade200,
         filled: true,

@@ -42,11 +42,11 @@ class _SignInScreenState extends State<SignInScreen> {
                     errorMsg: _errorMsg,
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return '입력란을 채워주세요.';
+                        return '이메일을 입력해주세요.';
                         //이메일 양식대로 작성하도록 정규식 조건 부여
                       } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
                           .hasMatch(val)) {
-                        return '유효한 이메일을 입력해주세요.';
+                        return '올바른 이메일 형식을 입력해주세요.';
                       }
                       return null;
                     })),
@@ -63,11 +63,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   errorMsg: _errorMsg,
                   validator: (val) {
                     if (val!.isEmpty) {
-                      return '입력란을 채워주세요.';
-                      //이메일 양식대로 작성하도록 정규식 조건 부여
-                    } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
+                      return '비밀번호를 입력해주세요.';
+                      //비밀번호 양식대로 작성하도록 정규식 조건 부여
+                    } else if (!RegExp(
+                            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
                         .hasMatch(val)) {
-                      return '유효한 이메일을 입력해주세요.';
+                      return '올바른 비밀번호를 입력해주세요.';
                     }
                     return null;
                   },
@@ -88,12 +89,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 )),
             //비밀번호 입력란과 버튼 사이의 간격 조정
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
             //로그인 버튼
             !signInRequired
                 ? SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     child: TextButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -107,16 +108,16 @@ class _SignInScreenState extends State<SignInScreen> {
                               Theme.of(context).colorScheme.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(60))),
+                              borderRadius: BorderRadius.circular(65))),
                       child: const Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 20),
+                              horizontal: 25, vertical: 16),
                           child: Text(
-                            'Sing In',
+                            '로그인',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 15,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600),
                           )),
                     ),

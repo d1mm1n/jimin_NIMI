@@ -22,7 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool obscurePassword = true;
   bool signUpRequired = false;
 
-  bool containsUpperCase = false;
   bool containsLowerCase = false;
   bool containsNumber = false;
   bool containsSpecialChar = false;
@@ -55,16 +54,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: MyTextField(
                     controller: emailController,
-                    hintText: 'Email',
+                    hintText: '이메일',
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(CupertinoIcons.mail_solid),
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
+                        return '이메일을 입력해주세요.';
                       } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
                           .hasMatch(val)) {
-                        return 'Please enter a valid email';
+                        return '올바른 이메일 형식을 입력해주세요.';
                       }
                       return null;
                     }),
@@ -74,21 +73,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: MyTextField(
                     controller: passwordController,
-                    hintText: 'Password',
+                    hintText: '비밀번호',
                     obscureText: obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
                     onChanged: (val) {
-                      if (val!.contains(RegExp(r'[A-Z]'))) {
-                        setState(() {
-                          containsUpperCase = true;
-                        });
-                      } else {
-                        setState(() {
-                          containsUpperCase = false;
-                        });
-                      }
-                      if (val.contains(RegExp(r'[a-z]'))) {
+                      //여기 수정
+                      if (val!.contains(RegExp(r'[a-z]'))) {
                         setState(() {
                           containsLowerCase = true;
                         });
@@ -142,11 +133,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
+                        return '비밀번호를 입력해주세요.';
                       } else if (!RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
+                              r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
                           .hasMatch(val)) {
-                        return 'Please enter a valid password';
+                        return '올바른 비밀번호 형식을 입력해주세요.';
                       }
                       return null;
                     }),
@@ -159,13 +150,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "⚈  1 uppercase",
-                        style: TextStyle(
-                            color: containsUpperCase
-                                ? Colors.green
-                                : Theme.of(context).colorScheme.onBackground),
-                      ),
                       Text(
                         "⚈  1 lowercase",
                         style: TextStyle(
@@ -208,15 +192,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: MyTextField(
                     controller: nameController,
-                    hintText: 'Name',
+                    hintText: '이름',
                     obscureText: false,
                     keyboardType: TextInputType.name,
                     prefixIcon: const Icon(CupertinoIcons.person_fill),
                     validator: (val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
-                      } else if (val.length > 30) {
-                        return 'Name too long';
+                        return '이름을 입력해주세요.';
+                      } else if (val.length > 10) {
+                        return '이름이 너무 깁니다.';
                       }
                       return null;
                     }),
