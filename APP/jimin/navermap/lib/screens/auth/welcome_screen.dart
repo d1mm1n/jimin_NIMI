@@ -52,6 +52,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
                 child: Container(),
               ),
+              //주목~~!!! 여기에 메인 이미지 들어갈꺼에염
+              const Align(
+                alignment: Alignment(0, -0.53),
+                child: Text("여기에 이미지 넣을꺼임 \n 어린이 안심귀가 어쩔저쩔"),
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(

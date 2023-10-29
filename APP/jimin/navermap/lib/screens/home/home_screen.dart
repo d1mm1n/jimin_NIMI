@@ -1,7 +1,5 @@
-import 'package:navermap/blocs/sign_in_bloc/sign_in_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:navermap/screens/home/bottom_menu.dart'; // TestView 클래스가 정의된 파일을 import
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,13 +8,27 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome, you are In !'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                context.read<SignInBloc>().add(const SignOutRequired());
-              },
-              icon: Icon(Icons.login))
+        elevation: 0,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
+      body: Stack(
+        children: <Widget>[
+          //아래 네비게이션 바
+          TestView(),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              width: 400,
+              height: 80,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(70.0),
+                  bottomRight: Radius.circular(70.0),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
